@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: devops-demo
-        image: my-dockerhub-username/devops-demo:latest
+        image: ramya1998ram/devops-demo:latest
         ports:
         - containerPort: 3000
         imagePullPolicy: Always

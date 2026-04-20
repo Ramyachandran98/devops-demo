@@ -6,7 +6,7 @@ const port = 3000;
 const server = http.createServer((req, res) => {
   res.statusCode = 200;
   res.setHeader('Content-Type', 'text/plain');
-  res.end('Hello from Minikube 🚀\n');
+  res.end('Hello from Minikube, Hope you are doing great! 🚀\n');
 });
 
 server.listen(port, hostname, () => {
