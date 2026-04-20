@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: devops-demo
-        image: ramya1998ram/devops-demo:latest
+        image: ramya1998ram/devops-demo:a089d26613424b0af5679e4eafa3053d22ad46bb
         ports:
         - containerPort: 3000
         imagePullPolicy: Always
