@@ -10,28 +10,38 @@ env:
 
 jobs:
   deploy:
-    runs-on: self-hosted   # your Mac runner
+    runs-on: self-hosted   # Mac runner with Docker + kubectl + minikube
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # 1. Build Docker image
+      # 1. Login to Docker Hub
+      - name: Docker Login
+        run: |
+          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      # 2. Build Docker image
       - name: Build Docker image
         run: |
           docker build -t $IMAGE_NAME:${{ github.sha }} .
 
-      # 2. Push Docker image
+      # 3. Push Docker image
       - name: Push Docker image
         run: |
           docker push $IMAGE_NAME:${{ github.sha }}
 
-      # 3. Update deployment.yaml automatically
+      # 4. Ensure Minikube is running
+      - name: Start Minikube
+        run: |
+          minikube status || minikube start
+
+      # 5. Update Kubernetes manifest (cross-platform safe)
       - name: Update Kubernetes manifest
         run: |
-          sed -i '' 's|image: .*|image: '"$IMAGE_NAME:${{ github.sha }}"'|g' k8s/deployment.yaml
+          sed -i.bak "s|image: .*|image: $IMAGE_NAME:${{ github.sha }}|g" k8s/deployment.yaml
 
-      # 4. Apply to Minikube
+      # 6. Apply Kubernetes manifests
       - name: Deploy to Kubernetes
         run: |
           kubectl apply -f k8s/deployment.yaml
