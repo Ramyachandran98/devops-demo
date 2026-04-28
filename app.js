@@ -6,7 +6,7 @@ const port = 3000;
 const server = http.createServer((req, res) => {
   res.statusCode = 200;
   res.setHeader('Content-Type', 'text/plain');
-  res.end('Hello from Minikube further for changes...skipping for changes in my file 🚀\n');
+  res.end('Hello from Minikube further for changes...skipping for changes in my file..hello world HOPE YOU RAE DOING GOOF🚀\n');
 });
 
 server.listen(port, hostname, () => {
