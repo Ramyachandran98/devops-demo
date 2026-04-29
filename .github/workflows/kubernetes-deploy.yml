@@ -1,0 +1,68 @@
+# Kubernetes Deployment Workflow
+
+name: Deploy to Kubernetes
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'v1.27.0'
+      
+      - name: Build Docker images
+        run: |
+          docker build -t user-service:${{ github.sha }} ./services/user-service
+          docker build -t product-service:${{ github.sha }} ./services/product-service
+          docker build -t order-service:${{ github.sha }} ./services/order-service
+      
+      - name: Tag as latest
+        run: |
+          docker tag user-service:${{ github.sha }} user-service:latest
+          docker tag product-service:${{ github.sha }} product-service:latest
+          docker tag order-service:${{ github.sha }} order-service:latest
+      
+      - name: Configure kubectl (local cluster)
+        run: |
+          # For local/self-hosted clusters, add your kubeconfig setup here
+          # Example: kubectl config use-context docker-desktop
+          # Or set: KUBECONFIG=${{ secrets.KUBE_CONFIG }}
+          echo "Configure your Kubernetes cluster connection in GitHub Secrets"
+      
+      - name: Deploy User Service
+        run: kubectl apply -f k8s/user-service-deployment.yaml
+      
+      - name: Deploy Product Service
+        run: kubectl apply -f k8s/product-service-deployment.yaml
+      
+      - name: Deploy Order Service
+        run: kubectl apply -f k8s/order-service-deployment.yaml
+      
+      - name: Wait for deployments to be ready
+        run: |
+          kubectl rollout status deployment/user-service -n default --timeout=5m
+          kubectl rollout status deployment/product-service -n default --timeout=5m
+          kubectl rollout status deployment/order-service -n default --timeout=5m
+      
+      - name: Verify deployment
+        run: |
+          echo "=== Deployments ==="
+          kubectl get deployments
+          echo ""
+          echo "=== Pods ==="
+          kubectl get pods
+          echo ""
+          echo "=== Services ==="
+          kubectl get svc
+          echo ""
+          echo "=== Pod Details ==="
+          kubectl describe pods

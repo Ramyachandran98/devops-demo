@@ -1,12 +1,12 @@
 {
-  "name": "devops-demo",
+  "name": "user-service",
   "version": "1.0.0",
-  "description": "Simple Node.js DevOps demo app",
+  "description": "User microservice",
   "main": "app.js",
   "scripts": {
     "start": "node app.js"
   },
-  "keywords": ["devops", "docker", "kubernetes"],
+  "keywords": ["microservices", "users"],
   "author": "",
   "license": "MIT"
 }

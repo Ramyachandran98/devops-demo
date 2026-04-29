@@ -1,0 +1,12 @@
+{
+  "name": "order-service",
+  "version": "1.0.0",
+  "description": "Order microservice",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "keywords": ["microservices", "orders"],
+  "author": "",
+  "license": "MIT"
+}

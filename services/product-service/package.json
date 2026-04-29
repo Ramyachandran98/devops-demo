@@ -1,0 +1,12 @@
+{
+  "name": "product-service",
+  "version": "1.0.0",
+  "description": "Product microservice",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "keywords": ["microservices", "products"],
+  "author": "",
+  "license": "MIT"
+}
