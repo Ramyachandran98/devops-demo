@@ -16,8 +16,8 @@ spec:
     spec:
       containers:
       - name: product-service
-        image: product-service:latest
-        imagePullPolicy: Never
+        image: ramya1998ram/product-service:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 3002
         env:
